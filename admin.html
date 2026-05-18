@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ-панель - Java Экзамен</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div>
+                <h1>Управление контентом</h1>
+            </div>
+            <div class="header-actions">
+                <a href="index.html">← К тесту</a>
+                <button onclick="resetToDefault()">Сбросить</button>
+            </div>
+        </div>
+
+        <div id="message" class="message"></div>
+
+        <div class="main-layout">
+            <aside class="sidebar">
+                <h3>Управление</h3>
+
+                <div class="control-group">
+                    <label for="variantSelect">Вариант</label>
+                    <select id="variantSelect" onchange="loadVariant()">
+                        <option value="">Выберите вариант</option>
+                    </select>
+                </div>
+
+                <div class="control-group">
+                    <label for="questionSelect">Вопрос</label>
+                    <select id="questionSelect" onchange="loadQuestion()">
+                        <option value="">Выберите вопрос</option>
+                    </select>
+                </div>
+
+                <div class="question-stats" id="stats" style="display: none;">
+                    <div class="stat-box">
+                        <div class="stat-value" id="statVariants">0</div>
+                        <div class="stat-label">Вариантов</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="statQuestions">0</div>
+                        <div class="stat-label">Вопросов</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="statLanguages">3</div>
+                        <div class="stat-label">Языков</div>
+                    </div>
+                </div>
+
+                <button class="add-question-btn" onclick="addNewQuestion()">+ Добавить вопрос</button>
+
+                <div style="margin-top: 30px; border-top: 1px solid #2a2a2a; padding-top: 20px;">
+                    <h3>Данные</h3>
+                    <div class="export-import">
+                        <button class="btn-export" onclick="exportData()">Экспорт</button>
+                        <button class="btn-import" onclick="document.getElementById('importFile').click()">Импорт</button>
+                    </div>
+                    <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importData(event)">
+                </div>
+            </aside>
+
+            <main class="editor">
+                <div id="editorContent">
+                    <div class="no-data">
+                        <div style="font-size: 3em; margin-bottom: 20px;">📝</div>
+                        <div style="font-size: 1.2em; color: #999; line-height: 1.8;">
+                            Выберите вариант и вопрос<br>
+                            для начала редактирования
+                        </div>
+                        <div style="margin-top: 30px; padding-top: 30px; border-top: 1px solid #3a3a3a; color: #666; font-size: 0.9em;">
+                            <div style="margin-bottom: 15px;">
+                                <strong style="color: #999;">Советы:</strong>
+                            </div>
+                            <ul style="margin-left: 20px; line-height: 1.8;">
+                                <li>1. Выберите вариант из левого меню</li>
+                                <li>2. Выберите вопрос для редактирования</li>
+                                <li>3. Отредактируйте текст и ответы</li>
+                                <li>4. Переключайтесь между языками</li>
+                                <li>5. Нажмите "Сохранить" для применения</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <script src="admin.js"></script>
+</body>
+</html>
