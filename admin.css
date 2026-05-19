@@ -420,7 +420,7 @@
 
         .stat-box {
             background: #2a2a2a;
-            padding: 16px;
+            padding: 12px;
             border-right: 1px solid #3a3a3a;
             border-bottom: 1px solid #3a3a3a;
         }
@@ -434,15 +434,15 @@
         }
 
         .stat-value {
-            font-size: 28px;
+            font-size: 24px;
             font-weight: 700;
             color: #667eea;
         }
 
         .stat-label {
-            font-size: 12px;
+            font-size: 11px;
             color: #999;
-            margin-top: 6px;
+            margin-top: 4px;
             font-weight: 500;
         }
 

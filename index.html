@@ -30,6 +30,7 @@
             <div class="control-group">
                 <label for="variant">Выбрать вариант:</label>
                 <select id="variant">
+                    <option> Выберите вариант </option>
                     <option value="1">Вариант 1</option>
                     <option value="2">Вариант 2</option>
                     <option value="3">Вариант 3</option>
@@ -49,7 +50,11 @@
 
             <div class="control-group">
                 <label for="questionNumber">Номер вопроса:</label>
-                <input type="number" id="questionNumber" min="1" max="40" value="1">
+                <div class="number-input-wrapper">
+                    <button type="button" class="number-input-btn" onclick="decreaseQuestion()">−</button>
+                    <input type="number" id="questionNumber" min="1" max="40" value="1">
+                    <button type="button" class="number-input-btn" onclick="increaseQuestion()">+</button>
+                </div>
             </div>
 
             <div class="control-group">

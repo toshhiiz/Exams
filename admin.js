@@ -14,8 +14,15 @@ async function loadAllData() {
 
     for (const [lang, file] of Object.entries(files)) {
         try {
-            const response = await fetch(file);
-            allData[lang] = await response.json();
+            // Сначала пытаемся загрузить сохранённые данные из localStorage
+            const savedData = localStorage.getItem(`examData_${lang}`);
+            if (savedData) {
+                allData[lang] = JSON.parse(savedData);
+            } else {
+                // Если нет сохранённых данных, загружаем из JSON файла
+                const response = await fetch(file);
+                allData[lang] = await response.json();
+            }
         } catch (e) {
             console.error(`Failed to load ${file}:`, e);
             allData[lang] = { ui: {}, variants: {} };
@@ -99,9 +106,9 @@ function renderEditor() {
         <h2>Вопрос ${currentQuestion + 1}, Вариант ${currentVariant}</h2>
 
         <div class="language-tabs">
-            <button class="active" onclick="switchLanguage('ru')">Русский</button>
-            <button onclick="switchLanguage('en')">English</button>
-            <button onclick="switchLanguage('kz')">Қазақша</button>
+            <button ${currentLanguage === 'ru' ? 'class="active"' : ''} onclick="switchLanguage('ru')">Русский</button>
+            <button ${currentLanguage === 'en' ? 'class="active"' : ''} onclick="switchLanguage('en')">English</button>
+            <button ${currentLanguage === 'kz' ? 'class="active"' : ''} onclick="switchLanguage('kz')">Қазақша</button>
         </div>
 
         <div class="form-group">
@@ -125,10 +132,22 @@ function renderEditor() {
 
 function switchLanguage(lang) {
     currentLanguage = lang;
-    document.querySelectorAll('.language-tabs button').forEach(btn => {
+    const buttons = document.querySelectorAll('.language-tabs button');
+    buttons.forEach(btn => {
         btn.classList.remove('active');
     });
-    event.target.classList.add('active');
+    
+    // Находим кнопку с нужным языком и активируем её
+    buttons.forEach(btn => {
+        const btnText = btn.textContent.toLowerCase();
+        if ((lang === 'ru' && btnText.includes('русский')) ||
+            (lang === 'en' && btnText.includes('english')) ||
+            (lang === 'kz' && btnText.includes('қазақша'))) {
+            btn.classList.add('active');
+        }
+    });
+    
+    updateStats();
     renderEditor();
 }
 
@@ -254,9 +273,11 @@ function updateStats() {
     Object.values(allData[currentLanguage].variants).forEach(v => {
         totalQuestions += v.length;
     });
+    const languageCount = Object.keys(allData).length;
 
     document.getElementById('statVariants').textContent = variantCount;
     document.getElementById('statQuestions').textContent = totalQuestions;
+    document.getElementById('statLanguages').textContent = languageCount;
     document.getElementById('stats').style.display = 'grid';
 }
 

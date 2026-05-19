@@ -16,8 +16,15 @@ async function loadAllData() {
 
     for (const [lang, file] of Object.entries(files)) {
         try {
-            const response = await fetch(file);
-            allData[lang] = await response.json();
+            // Сначала пытаемся загрузить сохранённые данные из localStorage
+            const savedData = localStorage.getItem(`examData_${lang}`);
+            if (savedData) {
+                allData[lang] = JSON.parse(savedData);
+            } else {
+                // Если нет сохранённых данных, загружаем из JSON файла
+                const response = await fetch(file);
+                allData[lang] = await response.json();
+            }
         } catch (e) {
             console.error(`Failed to load ${file}:`, e);
             allData[lang] = { variants: {} };
@@ -273,6 +280,26 @@ function updateStats() {
     document.getElementById('totalQuestions').textContent = totalQuestions;
     document.getElementById('answered').textContent = '0';
     document.getElementById('progress').textContent = '0%';
+}
+
+function increaseQuestion() {
+    const input = document.getElementById('questionNumber');
+    const current = parseInt(input.value) || 1;
+    const max = parseInt(input.max) || 40;
+    if (current < max) {
+        input.value = current + 1;
+        loadQuestion();
+    }
+}
+
+function decreaseQuestion() {
+    const input = document.getElementById('questionNumber');
+    const current = parseInt(input.value) || 1;
+    const min = parseInt(input.min) || 1;
+    if (current > min) {
+        input.value = current - 1;
+        loadQuestion();
+    }
 }
 
 init();

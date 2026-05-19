@@ -112,6 +112,82 @@ select:focus, input[type="number"]:focus {
     background: #333;
 }
 
+/* Скрываем дефолтные стрелки */
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    appearance: none;
+    margin: 0;
+}
+
+/* Обёртка для input с кастомными стрелками */
+.number-input-wrapper {
+    display: flex;
+    align-items: center;
+    background: #2a2a2a;
+    border: 1px solid #3a3a3a;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.number-input-wrapper:focus-within {
+    border-color: #667eea;
+    box-shadow: 0 0 5px rgba(102, 126, 234, 0.3);
+}
+
+.number-input-wrapper input {
+    border: none;
+    background: transparent;
+    color: #e0e0e0;
+    padding: 10px 15px;
+    font-size: 1em;
+    flex: 1;
+    min-width: 100px;
+}
+
+.number-input-wrapper input:focus {
+    outline: none;
+}
+
+.number-input-btn {
+    background: #3a3a3a;
+    color: #e0e0e0;
+    border: none;
+    width: 35px;
+    height: 38px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 1.2em;
+    transition: all 0.2s ease;
+    border-left: 1px solid #3a3a3a;
+}
+
+.number-input-btn:first-child {
+    border-left: none;
+    border-radius: 5px 0 0 5px;
+}
+
+.number-input-btn:last-child {
+    border-radius: 0 5px 5px 0;
+}
+
+.number-input-btn:hover {
+    background: #4a4a4a;
+    color: #667eea;
+}
+
+.number-input-btn:active {
+    background: #667eea;
+    color: white;
+}
+
 button {
     background: #667eea;
     color: white;
