@@ -148,9 +148,27 @@ function selectVariant() {
 }
 
 function loadQuestion() {
-    const num = parseInt(document.getElementById('questionNumber').value);
-    if (num >= 1 && num <= (allData[currentLanguage].variants[currentVariant]?.length || 0)) {
-        currentQuestion = num;
+    try {
+        const input = document.getElementById('questionNumber');
+        const num = parseInt(input.value);
+        const maxQuestions = allData[currentLanguage].variants[currentVariant]?.length || 0;
+        
+        // Если число некорректное или больше максимума
+        if (isNaN(num) || num < 1 || num > maxQuestions) {
+            // Устанавливаем последний вопрос
+            currentQuestion = maxQuestions;
+            input.value = maxQuestions;
+            console.warn(`Номер вопроса ${num} не существует. Установлен последний вопрос: ${maxQuestions}`);
+        } else {
+            currentQuestion = num;
+        }
+        
+        displayQuestions();
+    } catch (error) {
+        console.error('Ошибка при загрузке вопроса:', error);
+        // Устанавливаем первый вопрос при ошибке
+        currentQuestion = 1;
+        document.getElementById('questionNumber').value = 1;
         displayQuestions();
     }
 }
@@ -283,22 +301,32 @@ function updateStats() {
 }
 
 function increaseQuestion() {
-    const input = document.getElementById('questionNumber');
-    const current = parseInt(input.value) || 1;
-    const max = parseInt(input.max) || 40;
-    if (current < max) {
-        input.value = current + 1;
-        loadQuestion();
+    try {
+        const input = document.getElementById('questionNumber');
+        const current = parseInt(input.value) || 1;
+        const maxQuestions = allData[currentLanguage].variants[currentVariant]?.length || 40;
+        
+        if (current < maxQuestions) {
+            input.value = current + 1;
+            loadQuestion();
+        }
+    } catch (error) {
+        console.error('Ошибка при увеличении номера вопроса:', error);
     }
 }
 
 function decreaseQuestion() {
-    const input = document.getElementById('questionNumber');
-    const current = parseInt(input.value) || 1;
-    const min = parseInt(input.min) || 1;
-    if (current > min) {
-        input.value = current - 1;
-        loadQuestion();
+    try {
+        const input = document.getElementById('questionNumber');
+        const current = parseInt(input.value) || 1;
+        const min = parseInt(input.min) || 1;
+        
+        if (current > min) {
+            input.value = current - 1;
+            loadQuestion();
+        }
+    } catch (error) {
+        console.error('Ошибка при уменьшении номера вопроса:', error);
     }
 }
 
